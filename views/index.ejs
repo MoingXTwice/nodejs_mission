@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Main Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+</head>
+<body>
+<div class="main" style="background: aquamarine">
+    <h1>메인페이지</h1>
+    <button class="button is-danger" onclick="location.href='/api/write'">글쓰기</button>
+</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">제목</th>
+        <th scope="col">작성자</th>
+        <th scope="col">작성일자</th>
+    </tr>
+    </thead>
+    <% posts.forEach(post => { %>
+        <tr onclick="location.href='/api/post/<%= post.postId %>'">
+            <td><%= post.title %></td>
+            <td><%= post.writer %></td>
+            <td><%= post.writeDate %></td>
+        </tr>
+    <% }) %>
+</table>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>글 쓰기</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function post() {
+            let title = $('#title').val()
+            let content = $('#content').val()
+            let writer = $('#writer').val()
+            let password = $('#password').val()
+
+            $.ajax({
+                type: "POST",
+                url: "/api/post",
+                data: {
+                    'title': title,
+                    'content': content,
+                    'writer': writer,
+                    'password': password
+                },
+                success: function (response) {
+                    console.log(response);
+                    window.location.href = '/api/post'
+                }
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="field">
+    <label class="label">제목</label>
+    <div class="control">
+        <input class="input" type="text" id="title">
+    </div>
+    <label class="label">내용</label>
+    <div class="control">
+        <input class="input" type="text" id="content">
+    </div>
+    <label class="label">작성자</label>
+    <div class="control">
+        <input class="input" type="text" id="writer">
+    </div>
+    <label class="label">비밀번호</label>
+    <div class="control">
+        <input class="input" type="password" id="password">
+    </div>
+    <button class="button" onclick="post()">등록하기</button>
+</div>
+</body>
+</html>
