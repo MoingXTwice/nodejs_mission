@@ -1,7 +1,8 @@
 const express = require('express');
-const bodyParser = require('body-parser')
+// const bodyParser = require('body-parser')
 const connect = require('./schemas');
 const app = express();
+const port = 3000;
 
 connect();
 
@@ -12,9 +13,11 @@ const useMiddleWare = (req, res, next) => {
     next();
 };
 
-app.set('view engine','ejs');
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static('static'));
+app.set('views', __dirname + '/views');
+app.set('view engine', 'ejs');
+app.engine('html', require('ejs').renderFile);
+
+// app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.json());
 app.use(useMiddleWare);
 
@@ -24,6 +27,6 @@ app.get('/', (req, res) => {
     res.send('hello world');
 });
 
-app.listen(3000, () => {
-    console.log('열렸엉');
+app.listen(port, () => {
+    console.log(port, '번으로 서버가 연결되었습니다.');
 });

@@ -28,27 +28,89 @@
                 }
             });
         }
+
+        function modify(postId) {
+            let title = $('#title').val()
+            let content = $('#content').val()
+            let writer = $('#writer').val()
+            let password = $('#password').val()
+
+            $.ajax({
+                type: "PUT",
+                url: "/api/post/" + postId,
+                data: {
+                    'title': title,
+                    'content': content,
+                    'writer': writer,
+                    'password': password
+                },
+                success: function (response) {
+                    alert(response['message']);
+                    if (response['result'] === 'success') {
+                        window.location.href = '/api/post/' + postId;
+                    }
+                }
+            });
+        }
+
+        function del(postId) {
+            let password = $('#password').val()
+
+            $.ajax({
+                type: 'DELETE',
+                url: '/api/post/' + postId,
+                data: {'postId': postId, 'password':password},
+                success: function (response) {
+                    alert(response['result']);
+                    window.location.href = '/api/post'
+                }
+            })
+        }
     </script>
 </head>
 <body>
+<% if (locals.post) { %>
 <div class="field">
     <label class="label">제목</label>
     <div class="control">
-        <input class="input" type="text" id="title">
+        <input class="input" type="text" id="title" value="<%= post.title %>">
     </div>
     <label class="label">내용</label>
     <div class="control">
-        <input class="input" type="text" id="content">
+        <input class="input" type="text" id="content" value="<%= post.content %>">
     </div>
     <label class="label">작성자</label>
     <div class="control">
-        <input class="input" type="text" id="writer">
+        <input class="input" type="text" id="writer" value="<%= post.writer %>">
     </div>
     <label class="label">비밀번호</label>
     <div class="control">
         <input class="input" type="password" id="password">
     </div>
-    <button class="button" onclick="post()">등록하기</button>
+    <button class="button" onclick="modify(<%= post.postId %>)">수정하기</button>
+    <button class="button" onclick="del(<%= post.postId %>)">삭제하기</button>
+
 </div>
+<% } else { %>
+    <div class="field">
+        <label class="label">제목</label>
+        <div class="control">
+            <input class="input" type="text" id="title">
+        </div>
+        <label class="label">내용</label>
+        <div class="control">
+            <input class="input" type="text" id="content">
+        </div>
+        <label class="label">작성자</label>
+        <div class="control">
+            <input class="input" type="text" id="writer">
+        </div>
+        <label class="label">비밀번호</label>
+        <div class="control">
+            <input class="input" type="password" id="password">
+        </div>
+        <button class="button" onclick="post()">등록하기</button>
+    </div>
+<% } %>
 </body>
 </html>
