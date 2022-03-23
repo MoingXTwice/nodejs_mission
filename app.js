@@ -25,7 +25,7 @@ app.use(useMiddleWare);
 app.use('/api', [postRouter]);
 
 app.get('/', (req, res) => {
-    res.send('hello world');
+    res.redirect('/api/post');
 });
 
 app.listen(port, () => {

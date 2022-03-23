@@ -5,7 +5,7 @@ require('moment-timezone');
 moment.tz.setDefault("Asia/Seoul");
 
 router.get('/', (req, res) => {
-    res.send('this is root page');
+    res.redirect('/api/post');
 });
 
 // 글 목록 조회 api
