@@ -1,8 +1,9 @@
 const express = require('express');
-// const bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
 const connect = require('./schemas');
 const app = express();
 const port = 3000;
+require('dotenv').config();
 
 connect();
 
@@ -17,7 +18,7 @@ app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
 app.engine('html', require('ejs').renderFile);
 
-// app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.json());
 app.use(useMiddleWare);
 
