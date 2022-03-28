@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const userCtl = require('../controller/user')
+const userController = require('../controller/user')
 
 /**
  *   기본 루트
@@ -9,10 +9,10 @@ const userCtl = require('../controller/user')
 /** 페이지 로딩 구간*/
 
 // 글 작성 페이지
-router.get('/login', userCtl.loginPage);
+router.get('/login', userController.loginPage);
 
 // 글 수정 페이지
-router.get('/register', userCtl.registerPage);
+router.get('/register', userController.registerPage);
 
 /** 페이지 로딩 구간 종료*/
 
@@ -20,10 +20,10 @@ router.get('/register', userCtl.registerPage);
 /** api 구간 */
 
 // 회원가입 api
-router.post('/register', userCtl.signUp);
+router.post('/register', userController.signUp);
 
 // 로그인 api
-router.post('/login', userCtl.login);
+router.post('/login', userController.login);
 
 /** api 구간 종료 */
 

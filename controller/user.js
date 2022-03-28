@@ -1,5 +1,4 @@
 const User = require('../schemas/user');
-const Post = require("../schemas/post");
 
 /* api 구간 */
 
