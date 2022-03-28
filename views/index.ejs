@@ -9,7 +9,8 @@
 <body>
 <div class="main" style="background: aquamarine">
     <h1>메인페이지</h1>
-    <button class="button is-danger" onclick="location.href='/api/write'">글쓰기</button>
+    <button class="button is-danger" onclick="location.href='/api/posts/write'">글쓰기</button>
+    <button class="button is-danger" onclick="location.href='/api/users/login'">로그인</button>
 </div>
 <table class="table">
     <thead>
@@ -20,7 +21,7 @@
     </tr>
     </thead>
     <% posts.forEach(post => { %>
-        <tr onclick="location.href='/api/post/<%= post.postId %>'">
+        <tr onclick="location.href='/api/posts/<%= post.postId %>'">
             <td><%= post.title %></td>
             <td><%= post.writer %></td>
             <td><%= post.writeDate %></td>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>로그인</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        function login() {
+            let nickname = $('#nickname').val()
+            let password = $('#password').val()
+
+            $.ajax({
+                type: "POST",
+                url: "/api/users",
+                data: {
+                    'nickname': nickname,
+                    'password': password
+                },
+                success: function (response) {
+                    console.log(response);
+                    window.location.href = '/api/posts'
+                }
+            });
+        }
+
+
+    </script>
+</head>
+<body>
+    <div class="field">
+        <label class="label">아이디</label>
+        <div class="control">
+            <input class="input" type="text" id="nickname">
+        </div>
+        <label class="label">비밀번호</label>
+        <div class="control">
+            <input class="input" type="password" id="password">
+        </div>
+        <button class="button" onclick="login()">로그인</button>
+        <button class="button" onclick="location.href='/api/users/register'">회원가입</button>
+    </div>
+</body>
+</html>

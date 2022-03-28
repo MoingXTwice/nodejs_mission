@@ -13,9 +13,23 @@
             let writer = $('#writer').val()
             let password = $('#password').val()
 
+            if (title === '') {
+                alert('제목을 쓰세요')
+                return;
+            } else if (content === '') {
+                alert('글을 쓰세요')
+                return;
+            } else if (writer === '') {
+                alert('작성자를 쓰세요')
+                return;
+            } else if (password === '') {
+                alert('비밀번호를 쓰세요')
+                return;
+            }
+
             $.ajax({
                 type: "POST",
-                url: "/api/post",
+                url: "/api/posts",
                 data: {
                     'title': title,
                     'content': content,
@@ -24,7 +38,7 @@
                 },
                 success: function (response) {
                     console.log(response);
-                    window.location.href = '/api/post'
+                    window.location.href = '/api/posts'
                 }
             });
         }
@@ -37,7 +51,7 @@
 
             $.ajax({
                 type: "PUT",
-                url: "/api/post/" + postId,
+                url: "/api/posts/" + postId,
                 data: {
                     'title': title,
                     'content': content,
@@ -47,7 +61,7 @@
                 success: function (response) {
                     alert(response['message']);
                     if (response['result'] === 'success') {
-                        window.location.href = '/api/post/' + postId;
+                        window.location.href = '/api/posts/' + postId;
                     }
                 }
             });
@@ -58,11 +72,11 @@
 
             $.ajax({
                 type: 'DELETE',
-                url: '/api/post/' + postId,
+                url: '/api/posts/' + postId,
                 data: {'postId': postId, 'password':password},
                 success: function (response) {
-                    alert(response['result']);
-                    window.location.href = '/api/post'
+                    alert(response['message']);
+                    window.location.href = '/api/posts'
                 }
             })
         }
