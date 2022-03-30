@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const userController = require('../controller/user')
 const {validateRegister} = require('../middlewares/validator');
+const authMiddleware = require("../middlewares/auth");
 
 /**
  *   기본 루트
@@ -25,6 +26,9 @@ router.post('/register', validateRegister, userController.signUp);
 
 // 로그인 api
 router.post('/login', userController.login);
+
+// 몬가.. api.. 몬가....
+router.get('/me', authMiddleware, userController.something);
 
 /** api 구간 종료 */
 

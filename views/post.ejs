@@ -6,105 +6,27 @@
     <title>글 쓰기</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="/js/api.js"></script>
     <script>
-        function post() {
-            let title = $('#title').val()
-            let content = $('#content').val()
-            let writer = $('#writer').val()
-            let password = $('#password').val()
-
-            if (title === '') {
-                alert('제목을 쓰세요')
-                return;
-            } else if (content === '') {
-                alert('글을 쓰세요')
-                return;
-            } else if (writer === '') {
-                alert('작성자를 쓰세요')
-                return;
-            } else if (password === '') {
-                alert('비밀번호를 쓰세요')
-                return;
-            }
-
-            $.ajax({
-                type: "POST",
-                url: "/api/posts",
-                data: {
-                    'title': title,
-                    'content': content,
-                    'writer': writer,
-                    'password': password
-                },
-                success: function (response) {
-                    console.log(response);
-                    window.location.href = '/api/posts'
-                }
-            });
-        }
-
-        function modify(postId) {
-            let title = $('#title').val()
-            let content = $('#content').val()
-            let writer = $('#writer').val()
-            let password = $('#password').val()
-
-            $.ajax({
-                type: "PUT",
-                url: "/api/posts/" + postId,
-                data: {
-                    'title': title,
-                    'content': content,
-                    'writer': writer,
-                    'password': password
-                },
-                success: function (response) {
-                    alert(response['message']);
-                    if (response['result'] === 'success') {
-                        window.location.href = '/api/posts/' + postId;
-                    }
-                }
-            });
-        }
-
-        function del(postId) {
-            let password = $('#password').val()
-
-            $.ajax({
-                type: 'DELETE',
-                url: '/api/posts/' + postId,
-                data: {'postId': postId, 'password':password},
-                success: function (response) {
-                    alert(response['message']);
-                    window.location.href = '/api/posts'
-                }
-            })
-        }
+        authCheck();
     </script>
 </head>
 <body>
 <% if (locals.post) { %>
-<div class="field">
-    <label class="label">제목</label>
-    <div class="control">
-        <input class="input" type="text" id="title" value="<%= post.title %>">
-    </div>
-    <label class="label">내용</label>
-    <div class="control">
-        <input class="input" type="text" id="content" value="<%= post.content %>">
-    </div>
-    <label class="label">작성자</label>
-    <div class="control">
-        <input class="input" type="text" id="writer" value="<%= post.writer %>">
-    </div>
-    <label class="label">비밀번호</label>
-    <div class="control">
-        <input class="input" type="password" id="password">
-    </div>
-    <button class="button" onclick="modify(<%= post.postId %>)">수정하기</button>
-    <button class="button" onclick="del(<%= post.postId %>)">삭제하기</button>
+    <div class="field">
+        <label class="label">제목</label>
+        <div class="control">
+            <input class="input" type="text" id="title" value="<%= post.title %>">
+        </div>
+        <label class="label">내용</label>
+        <div class="control">
+            <input class="input" type="text" id="content" value="<%= post.content %>">
+        </div>
+        <button class="button" onclick="modify(<%= post.postId %>)">수정하기</button>
+        <button class="button" onclick="del(<%= post.postId %>)">삭제하기</button>
 
-</div>
+    </div>
 <% } else { %>
     <div class="field">
         <label class="label">제목</label>
@@ -114,14 +36,6 @@
         <label class="label">내용</label>
         <div class="control">
             <input class="input" type="text" id="content">
-        </div>
-        <label class="label">작성자</label>
-        <div class="control">
-            <input class="input" type="text" id="writer">
-        </div>
-        <label class="label">비밀번호</label>
-        <div class="control">
-            <input class="input" type="password" id="password">
         </div>
         <button class="button" onclick="post()">등록하기</button>
     </div>

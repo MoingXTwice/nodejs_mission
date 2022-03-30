@@ -6,7 +6,94 @@
     <title>글 보기</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+    <script src="/js/api.js"></script>
+    <style>
+        #hide {
+            display: none;
+        }
+    </style>
+    <script>
+        function loginCheck() {
+            $.ajax({
+                type: "GET",
+                url: "/api/users/me",
+                success: function (response) {
+                    if (response['auth'] === 'falseLogin') {
+                        alert('로그인 후 이용해주세요.');
+                        location.href = '/api/users/login';
+                    } else if (response['auth'] === 'errorLogin') {
+                        alert('알 수 없는 오류입니다. 관계자에게 문의해주세요.');
+                        location.href = '/api/posts';
+                    }
+                },
+            });
+        }
 
+        function postComment() {
+            let content = $('#content').val()
+
+            if (content === '') {
+                alert('댓글 내용을 입력해주세요')
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/api/posts/<%= post.postId %>/comment",
+                data: {
+                    'content': content
+                },
+                success: function (response) {
+                    console.log(response);
+                    window.location.href = '/api/posts/<%= post.postId %>'
+                }
+            });
+        }
+
+        function modifyComment(commentId) {
+            let content = $('#modifyContent'+commentId).val()
+            alert(content);
+            if (content === '') {
+                alert('댓글 내용을 입력해주세요')
+                return;
+            }
+
+            $.ajax({
+                type: "PUT",
+                url: "/api/posts/<%= post.postId %>/comment",
+                data: {
+                    'commentId': commentId,
+                    'content': content
+                },
+                success: function (response) {
+                    alert(response['message']);
+                    window.location.reload();
+                }
+            });
+        }
+
+        function deleteComment(commentId) {
+            if (confirm('정말로 삭제하시겠습니까?')) {
+                $.ajax({
+                    type: "DELETE",
+                    url: "/api/posts/<%= post.postId %>/comment",
+                    data: {'commentId': commentId},
+                    success: function (response) {
+                        alert(response['message']);
+                        window.location.reload();
+                    }
+                });
+            }
+        }
+
+        function showModify(commentId) {
+            $('.clickShow'+commentId).show();
+            $('.showFirst'+commentId).hide();
+        }
+
+
+    </script>
 </head>
 <body>
 <div class="main" style="background: aquamarine">글보기페이지</div>
@@ -23,6 +110,34 @@
         </div>
     </article>
 </div>
-<button class="button" onclick="location.href='/api/posts/write/<%=post.postId%>'">수정하기</button>
+<% if (locals.nickname === post.nickname){ %>
+    <button class="button" onclick="location.href='/api/posts/write/<%=post.postId%>'">수정하기</button>
+<% }%>
+<div class="control">
+    <input class="input" type="text" id="content" onclick="loginCheck()">
+    <button class="button" onclick="postComment()">댓글쓰기</button>
+</div>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">댓글 쓴 사람</th>
+        <th scope="col">댓글 내용</th>
+    </tr>
+    </thead>
+<% comments.forEach(comment => { %>
+    <tr>
+        <td class="showFirst<%= comment.commentId %>"><%= comment.nickname %></td>
+        <td class="showFirst<%= comment.commentId %>"><%= comment.content %></td>
+        <% if (locals.nickname === comment.nickname){ %>
+            <td class="showFirst<%= comment.commentId %>"><button class="button" onclick="showModify(<%= comment.commentId %>)">수정</button></td>
+            <td class="showFirst<%= comment.commentId %>"><button class="button" onclick="deleteComment(<%= comment.commentId %>)">삭제</button></td>
+            <td class="clickShow<%= comment.commentId %>" id="hide"><input class="input" type="text" id="modifyContent<%= comment.commentId %>" value="<%= comment.content %>" onclick="loginCheck()"></td>
+            <td class="clickShow<%= comment.commentId %>" id="hide"><button class="button" onclick="modifyComment(<%= comment.commentId %>)">저장</button></td>
+        <% }%>
+    </tr>
+<% }) %>
+</table>
+
 </body>
 </html>

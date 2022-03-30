@@ -1,7 +1,8 @@
 const User = require('../schemas/user');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-/* api 구간 */
+/** api 구간 */
 
 // 회원가입
 async function signUp(req, res) {
@@ -9,8 +10,8 @@ async function signUp(req, res) {
 
     // TODO validation 에 .custom으로 뺄 수 있을 듯?
     // password 와 passwordConfirm 이 일치하지 않으면 회원가입 불가
-    if (nickname === password) {
-        return res.json({result: 'fail', errorMessage: '비밀번호는 아이디와 다르게 입력해주세요.'});
+    if (password.includes(nickname)) {
+        return res.json({result: 'fail', errorMessage: '비밀번호에는 아이디가 포함될 수 없습니다.'});
     }
 
     // TODO validation 에 .custom으로 뺄 수 있을 듯?
@@ -20,7 +21,7 @@ async function signUp(req, res) {
     }
 
     // 비밀번호 비교 후 암호화하여 저장
-    const hashPw = bcrypt.hashSync(password, +process.env.BCRYPT_SALT);
+    const hashPw = bcrypt.hashSync(password, +process.env.SECRET_SALT);
 
     // 가장 최근 유저 Id를 찾음
     const maxUserByUserId = await User.findOne().sort('-userId').exec();
@@ -39,32 +40,56 @@ async function signUp(req, res) {
 }
 
 // 로그인
-function login(req, res) {
+async function login(req, res) {
     const {nickname, password} = req.body;
 
-    const user = User.findOne({nickname});
-    console.log(user);
+    // 아이디 비교
+    const user = await User.findOne({nickname});
+    if (!user) {
+        return res.json({result: 'fail', errorMessage: '아이디 또는 비밀번호가 일치하지 않습니다.'});
+    }
 
-    res.send({});
+    // 비밀번호 비교
+    const hashPw = bcrypt.compareSync(password, user.password) // 일치하면 true 틀리면 false
+    if (!hashPw) {
+        return res.json({result: 'fail', errorMessage: '아이디 또는 비밀번호가 일치하지 않습니다.'});
+    }
+
+    // jwtToken 생성
+    const token = jwt.sign({
+        userId: user.userId,
+        nickname: user.nickname,
+    }, process.env.SECRET_KEY);
+    console.log(token)
+
+    res.send({token});
+}
+
+// 암튼 몬가.. 몬가 받음..
+async function something(req, res) {
+    const {auth} = res.locals;
+    console.log(auth);
+
+    res.send({auth});
 }
 
 
+/** api 구간 종료 */
 
 
-/* api 구간 종료 */
+/** 페이지 로딩 구간 */
 
-
-/* 페이지 로딩 구간 */
-
-function loginPage(req, res) {
-    res.status(200).render('login');
-}
-
+// 회원가입 페이지
 function registerPage(req, res) {
     res.status(200).render('register');
 }
 
-/* 페이지 로딩 구간 종료 */
+// 로그인 페이지
+function loginPage(req, res) {
+    res.status(200).render('login');
+}
+
+/** 페이지 로딩 구간 종료 */
 
 
 module.exports = {
@@ -72,4 +97,6 @@ module.exports = {
     login,
     loginPage,
     registerPage,
+    something,
+
 };
