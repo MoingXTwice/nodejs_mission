@@ -35,5 +35,9 @@ app.use(removeHeader);
 const Router = require('./routes');
 app.use("/api", Router);
 
+app.get('/', (req, res) => {
+    res.redirect('/api/posts');
+});
+
 
 module.exports = app;
