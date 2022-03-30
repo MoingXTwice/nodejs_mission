@@ -45,7 +45,6 @@
                     'content': content
                 },
                 success: function (response) {
-                    console.log(response);
                     window.location.href = '/api/posts/<%= post.postId %>'
                 }
             });
@@ -53,7 +52,6 @@
 
         function modifyComment(commentId) {
             let content = $('#modifyContent'+commentId).val()
-            alert(content);
             if (content === '') {
                 alert('댓글 내용을 입력해주세요')
                 return;

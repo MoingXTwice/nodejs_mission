@@ -18,15 +18,15 @@ function authCheck() {
     });
 }
 
-function getSelf() {
-    $.ajax({
-        type: 'GET',
-        url: '/api/users/me',
-        success: function (response) {
-            alert('언제 들러용?');
-        },
-    });
-}
+// function getSelf() {
+//     $.ajax({
+//         type: 'GET',
+//         url: '/api/users/me',
+//         success: function (response) {
+//             alert('언제 들러용?');
+//         },
+//     });
+// }
 
 function post() {
     let title = $('#title').val()
@@ -48,7 +48,6 @@ function post() {
             'content': content,
         },
         success: function (response) {
-            console.log(response);
             window.location.href = '/api/posts'
         }
     });

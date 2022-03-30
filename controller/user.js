@@ -60,7 +60,6 @@ async function login(req, res) {
         userId: user.userId,
         nickname: user.nickname,
     }, process.env.SECRET_KEY);
-    console.log(token)
 
     res.send({token});
 }
@@ -68,7 +67,6 @@ async function login(req, res) {
 // 암튼 몬가.. 몬가 받음..
 async function something(req, res) {
     const {auth} = res.locals;
-    console.log(auth);
 
     res.send({auth});
 }

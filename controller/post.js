@@ -34,7 +34,6 @@ async function writePost(req, res) {
     // 작성한 body의 데이터를 불러옴
     const {title, content} = req.body;
     const {user} = res.locals;
-    console.log(user);
 
     // 가장 최근 글 Id를 찾음
     const maxPostByPostId = await Post.findOne().sort('-postId').exec();
@@ -43,7 +42,6 @@ async function writePost(req, res) {
 
     // 글 작성시간 입력용
     let writeDate = moment().format('YYYY-MM-DD HH:mm:ss');
-    console.log(writeDate);
 
     // DB에 입력
     await Post.create({postId, title, content, userId: user.userId, nickname: user.nickname, writeDate});
@@ -104,7 +102,6 @@ async function writeComment(req, res) {
 async function modifyComment(req, res) {
     // 작성한 body의 데이터를 불러옴
     const {content, commentId} = req.body;
-    console.log(content, commentId);
 
     // DB에 입력
     await Comment.updateOne({commentId}, {$set: {content}});
