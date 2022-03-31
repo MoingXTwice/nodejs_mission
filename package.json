@@ -23,9 +23,12 @@
     "moment": "^2.29.1",
     "moment-timezone": "^0.5.34",
     "mongoose": "^6.2.7",
-    "mongoose-sequence": "^5.3.1"
+    "mongoose-sequence": "^5.3.1",
+    "swagger-autogen": "^2.20.7"
   },
   "devDependencies": {
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.15",
+    "swagger-jsdoc": "^6.1.0",
+    "swagger-ui-express": "^4.3.0"
   }
 }

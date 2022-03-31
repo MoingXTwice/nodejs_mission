@@ -18,6 +18,12 @@ const removeHeader = (req, res, next) => { //x-Powerd-By 제거
     next();
 };
 
+// swagger 적용
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require("./swagger-output");
+
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerFile));
+
 // ejs 세팅
 app.set('views', __dirname + '/views');
 app.set('view engine', 'ejs');
