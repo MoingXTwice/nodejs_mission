@@ -14,6 +14,7 @@ async function postList(req, res) {
 }
 
 // 글 번호로 상세보기 api
+// TODO
 async function viewPost(req, res) {
     const {postId} = req.params; // request param
     const {user} = res.locals;
@@ -31,19 +32,16 @@ async function viewPost(req, res) {
 
 // 글 작성 api
 async function writePost(req, res) {
-    // 작성한 body의 데이터를 불러옴
     const {title, content} = req.body;
     const {user} = res.locals;
 
     // 가장 최근 글 Id를 찾음
-    const maxPostByPostId = await Post.findOne().sort('-postId').exec();
     // postId는 가장 최근 글 Id에 + 1
+    const maxPostByPostId = await Post.findOne().sort('-postId').exec();
     const postId = maxPostByPostId ? maxPostByPostId.postId + 1 : 1;
 
-    // 글 작성시간 입력용
     let writeDate = moment().format('YYYY-MM-DD HH:mm:ss');
 
-    // DB에 입력
     await Post.create({postId, title, content, userId: user.userId, nickname: user.nickname, writeDate});
     res.status(200).json({result: 'success'});
 }
@@ -75,6 +73,8 @@ async function deletePost(req, res) {
 
 // 댓글 작성 api
 async function writeComment(req, res) {
+    // #swagger.description = "여기는 코멘트를 작성하는 곳입니다."
+    // #swagger.tags = ['Comment']
     // 작성한 body의 데이터를 불러옴
     const {content} = req.body;
     const {postId} = req.params;

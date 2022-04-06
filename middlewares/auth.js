@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../schemas/user');
 
 module.exports = async (req, res, next) => {
+    console.log(req.cookies);
     try {
         if (!req.cookies.accessToken) {
             res.locals.auth = 'falseLogin';

@@ -46,7 +46,7 @@ async function login(req, res) {
     // 아이디 비교
     const user = await User.findOne({nickname});
     if (!user) {
-        return res.json({result: 'fail', errorMessage: '아이디 또는 비밀번호가 일치하지 않습니다.'});
+        return res.status(401).json({result: 'fail', errorMessage: '아이디 또는 비밀번호가 일치하지 않습니다.'});
     }
 
     // 비밀번호 비교
@@ -64,7 +64,6 @@ async function login(req, res) {
     res.send({token});
 }
 
-// 암튼 몬가.. 몬가 받음..
 async function something(req, res) {
     const {auth} = res.locals;
 
@@ -96,5 +95,4 @@ module.exports = {
     loginPage,
     registerPage,
     something,
-
 };

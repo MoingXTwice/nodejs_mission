@@ -3,16 +3,31 @@
   "info": {
     "title": "김배승쓰",
     "description": "주특기 과제",
-    "version": "1.0.0"
+    "version": "1.0.1"
   },
   "host": "localhost:3000",
   "basePath": "/",
+  "tags": [
+    {
+      "name": "User",
+      "description": "회원 기능"
+    },
+    {
+      "name": "Post",
+      "description": "글 작성 기능"
+    },
+    {
+      "name": "Comment",
+      "description": "댓글 기능"
+    }
+  ],
   "schemes": [
     "http"
   ],
   "paths": {
     "/": {
       "get": {
+        "summary": "여기는 설명란이에요",
         "description": "우와 대박 신기해요",
         "parameters": [],
         "responses": {}
@@ -20,7 +35,9 @@
     },
     "/api/posts/write": {
       "get": {
-        "description": "",
+        "tags": ["Post"],
+        "summary": "여기에 달아주시면 보기 편해요",
+        "description": "데스크립션",
         "parameters": [],
         "responses": {
           "200": {
@@ -31,6 +48,7 @@
     },
     "/api/posts/write/{postId}": {
       "get": {
+        "tags": ["Post"],
         "description": "",
         "parameters": [
           {
@@ -47,9 +65,10 @@
         }
       }
     },
-    "/api/posts/": {
+    "/api/posts": {
       "get": {
-        "description": "",
+        "tags": ["Post"],
+        "description": "게시글 작성 페이지를 불러옵니다.",
         "parameters": [],
         "responses": {
           "200": {
@@ -58,7 +77,8 @@
         }
       },
       "post": {
-        "description": "",
+        "tags": ["Post"],
+        "description": "게시글을 작성하는 api",
         "parameters": [
           {
             "name": "body",
@@ -85,6 +105,7 @@
     },
     "/api/posts/{postId}": {
       "get": {
+      "tags": ["Post"],
         "description": "",
         "parameters": [
           {
@@ -101,6 +122,7 @@
         }
       },
       "put": {
+        "tags": ["Post"],
         "description": "",
         "parameters": [
           {
@@ -132,6 +154,7 @@
         }
       },
       "delete": {
+        "tags": ["Post"],
         "description": "",
         "parameters": [
           {
@@ -150,6 +173,7 @@
     },
     "/api/posts/{postId}/comment": {
       "post": {
+        "tags": ["Comment"],
         "description": "",
         "parameters": [
           {
@@ -178,6 +202,7 @@
         }
       },
       "put": {
+        "tags": ["Comment"],
         "description": "",
         "parameters": [
           {
@@ -209,6 +234,7 @@
         }
       },
       "delete": {
+        "tags": ["Comment"],
         "description": "",
         "parameters": [
           {
@@ -239,7 +265,9 @@
     },
     "/api/users/login": {
       "get": {
-        "description": "",
+        "tags": ["User"],
+        "summary": "유저가 로그인 하는 페이지 입니다.",
+        "description": "로그인 시에는 무엇무엇이 필요해요",
         "parameters": [],
         "responses": {
           "200": {
@@ -248,21 +276,14 @@
         }
       },
       "post": {
+        "tags": ["User"],
         "description": "",
         "parameters": [
           {
             "name": "body",
             "in": "body",
             "schema": {
-              "type": "object",
-              "properties": {
-                "nickname": {
-                  "example": "any"
-                },
-                "password": {
-                  "example": "any"
-                }
-              }
+              "$ref": "#/definitions/User"
             }
           }
         ],
@@ -275,6 +296,7 @@
     },
     "/api/users/register": {
       "get": {
+        "tags": ["User"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -284,6 +306,7 @@
         }
       },
       "post": {
+        "tags": ["User"],
         "description": "",
         "parameters": [
           {
@@ -314,6 +337,7 @@
     },
     "/api/users/me": {
       "get": {
+        "tags": ["User"],
         "description": "",
         "parameters": [],
         "responses": {
@@ -322,6 +346,37 @@
           }
         }
       }
+    }
+  },
+  "definitions": {
+    "User": {
+      "properties": {
+        "postId": {
+          "type": "Number",
+          "required": true,
+          "unique": true
+        },
+        "title": {
+          "type": "String"
+        },
+        "content": {
+          "type": "String",
+          "required": true
+        },
+        "userId": {
+          "type": "Number",
+          "required": true
+        },
+        "nickname": {
+          "type": "String",
+          "required": true
+        },
+        "writeDate": {
+          "type": "String"
+        }
+      }
+    },
+    "Post": {
     }
   }
 }
